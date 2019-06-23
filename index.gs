@@ -16,19 +16,17 @@ function hasValue(old_value,new_value){
 function mailTrigger(){
   var threads = GmailApp.search("from: me to:"+ SpreadsheetApp.getActiveSpreadsheet().getOwner().getEmail() + " subject: Re: Spredsheet")
   for(var i=0;i<threads.length;i++){
+    if(threads[i].getFirstMessageSubject().split(" ")[1] == SpreadsheetApp.getActive().getName()){
     var messages_in_thread = threads[i].getMessages()
     if(messages_in_thread){
-      var last_message = messages_in_thread[messages_in_thread.length - 1]
-      
-      if(last_message.isUnread()){
-        var regex = new RegExp(">(\\w+)<", "g");
-        var body = last_message.getBody()
-        var cell_a1_notation = last_message.getSubject().split(" ").pop()
-        
-        var answer = regex.exec(body)[1]
-        SpreadsheetApp.getActiveSheet().getRange(cell_a1_notation).setValue(answer);
-        last_message.markRead();
-      }
+        var last_message = messages_in_thread[messages_in_thread.length - 1]
+        var tokens = last_message.getSubject().split(" ")
+        var cell_a1_notation = tokens.pop()
+        var sheet_name = tokens[5]
+        var answer = new RegExp(">([\\w\\s]+)+<", "g").exec(last_message.getBody())[1]
+        SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet_name).getRange(cell_a1_notation).setValue(answer);
+        last_message.moveToTrash();
     }
+    }   
   }
 }
