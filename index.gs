@@ -31,7 +31,6 @@ function myTrigger(evt) {
       MailApp.sendEmail(editors[i].getEmail(),"Spredsheet \"" + SpreadsheetApp.getActive().getName() +"\" on sheet \""+SpreadsheetApp.getActiveSheet().getName()+"\" edited at \"" + evt.range.getA1Notation()+"\""  + " with name: \"" + name + "\"", "New value:" + evt.value)    
     }
   }
-  MailApp.sendEmail(effectiveUser.getEmail(),"Spredsheet \"" + SpreadsheetApp.getActive().getName() +"\" on sheet \""+SpreadsheetApp.getActiveSheet().getName()+"\" edited at \"" + evt.range.getA1Notation()+ "\"" + " with name: \"" + name + "\"", "New value:" + evt.value) 
 }
 function hasValue(old_value,new_value){
   var new_trimmed = new_value.trim()
