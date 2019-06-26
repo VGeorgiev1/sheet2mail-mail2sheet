@@ -39,6 +39,16 @@ function hasValue(old_value,new_value){
   }
   return false
 }
+function emptyTrigger(){
+  var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getRange(1, 1)
+  if(range.getValue().length == 0){
+      var spredsheet = SpreadsheetApp.getActiveSpreadsheet()
+      var editors = spredsheet.getEditors();
+      for(var i=0; i < editors.length;i++){
+          MailApp.sendEmail(editors[i].getEmail(),"Spredsheet \"" + SpreadsheetApp.getActive().getName() +"\" on sheet \""+SpreadsheetApp.getActiveSheet().getName()+"\" at cell: \"" + "\"" + range.getA1Notation() + "\"" ,"The cell is stil empty")     
+      }
+  }
+ }
 function mailTrigger(){
   var threads = GmailApp.search("to:"+  SpreadsheetApp.getActiveSpreadsheet().getOwner().getEmail() + " subject: Re: Spredsheet")
   for(var i=0;i<threads.length;i++){
