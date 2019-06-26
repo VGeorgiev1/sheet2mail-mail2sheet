@@ -1,1 +1,1 @@
-An example sheet with the script installed: https://docs.google.com/spreadsheets/d/1vRCHCkK6iiMeRWctktM86an23XivQVRH69cub7PH3OM/edit#gid=0
+https://script.google.com/macros/s/AKfycbxoxWTy4EzXkjH6SmyGwFK4FLBDWxFX3bBzqkLR1A/exec
