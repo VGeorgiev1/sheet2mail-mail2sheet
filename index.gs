@@ -40,15 +40,19 @@ function hasValue(old_value,new_value){
   return false
 }
 function emptyTrigger(){
-  var range = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getRange(1, 1)
-  if(range.getValue().length == 0){
-      var spredsheet = SpreadsheetApp.getActiveSpreadsheet()
-      var editors = spredsheet.getEditors();
-      for(var i=0; i < editors.length;i++){
-          MailApp.sendEmail(editors[i].getEmail(),"Spredsheet \"" + SpreadsheetApp.getActive().getName() +"\" on sheet \""+SpreadsheetApp.getActiveSheet().getName()+"\" at cell: \"" + "\"" + range.getA1Notation() + "\"" ,"The cell is stil empty")     
+  var email_values = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('emails').getRange("A:B").getValues().filter(function(c){return c[0].length != 0 && c[1].length != 0});
+  var current_sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var range = current_sheet.getRange("A2:B")
+  var values = range.getValues().filter(function(c){return c[0].length != 0})
+  for(var i=0;i < email_values.length; i++){
+    for(var j=0;j < values.length;j++){
+      if(values[j][0] == email_values[i][0] && values[j][1].length == 0){
+        var notation = range.getCell(i, 2).getA1Notation()
+        MailApp.sendEmail(email_values[i][1],"Spredsheet \"" + SpreadsheetApp.getActive().getName() +"\" on sheet \""+SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].getName() +"\" is empty at \"" + notation +"\"", "This cell must be fullfiled");  
       }
+    }
   }
- }
+}
 function mailTrigger(){
   var threads = GmailApp.search("to:"+  SpreadsheetApp.getActiveSpreadsheet().getOwner().getEmail() + " subject: Re: Spredsheet")
   for(var i=0;i<threads.length;i++){
